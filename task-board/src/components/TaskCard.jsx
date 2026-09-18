@@ -12,7 +12,6 @@ function TaskCard({ task }) {
     (state) => state.tasks.saving
   );
 
-  // Move task to next status
   const handleMoveNext = () => {
     let nextStatus;
 
@@ -32,56 +31,47 @@ function TaskCard({ task }) {
     dispatch(updateTask(updatedTask));
   };
 
-  // Delete task
   const handleDelete = () => {
     dispatch(deleteTask(task.id));
   };
 
   return (
-    <article className="rounded-lg bg-white p-5 shadow-sm">
-
-      <h3 className="text-lg font-semibold text-gray-900">
+    <article className="rounded-lg bg-gray-700 p-5 shadow-md">
+      <h3 className="text-lg font-semibold text-white">
         {task.title}
       </h3>
 
-      <p className="mt-2 text-sm leading-6 text-gray-600">
+      <p className="mt-2 text-sm leading-6 text-gray-300">
         {task.description}
       </p>
 
       <div className="mt-4 flex items-center gap-2">
-
-        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium capitalize text-gray-700">
+        <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-medium capitalize text-gray-200">
           {task.priority}
         </span>
 
-        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+        <span className="rounded-full bg-gray-600 px-3 py-1 text-xs font-medium text-gray-200">
           {task.status}
         </span>
-
       </div>
 
-      {/* Move Button */}
       <button
         onClick={handleMoveNext}
         disabled={saving}
-        className="mt-4 w-full rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-4 w-full rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white hover:bg-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {saving
           ? "Saving..."
           : getButtonText(task.status)}
       </button>
 
-      {/* Delete Button */}
       <button
         onClick={handleDelete}
         disabled={saving}
-        className="mt-2 w-full rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-2 w-full rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {saving
-          ? "Deleting..."
-          : "Delete Task"}
+        {saving ? "Deleting..." : "Delete Task"}
       </button>
-
     </article>
   );
 }

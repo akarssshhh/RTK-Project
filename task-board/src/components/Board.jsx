@@ -2,67 +2,81 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Column from "./Column";
-
 import {
   fetchTasks,
+  selectAllTasks,
   selectTaskStatus,
   selectTaskError,
-  selectTodoTasks,
-  selectInProgressTasks,
-  selectDoneTasks,
 } from "../features/tasks/tasksSlice";
 
 function Board() {
   const dispatch = useDispatch();
 
-  // Read data using named selectors
+  const tasks = useSelector(selectAllTasks);
   const status = useSelector(selectTaskStatus);
-
   const error = useSelector(selectTaskError);
 
-  const todoTasks = useSelector(selectTodoTasks);
-
-  const inProgressTasks = useSelector(
-    selectInProgressTasks
+  const search = useSelector(
+    (state) => state.filters.search
   );
 
-  const doneTasks = useSelector(selectDoneTasks);
+  const priority = useSelector(
+    (state) => state.filters.priority
+  );
 
-
-  // Fetch tasks when Board loads
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
 
+  const filteredTasks = tasks.filter((task) => {
+    const searchText = search.toLowerCase();
 
-  // Loading state
+    const matchesSearch =
+      task.title.toLowerCase().includes(searchText) ||
+      task.description.toLowerCase().includes(searchText);
+
+    const matchesPriority =
+      priority === "all" ||
+      task.priority === priority;
+
+    return matchesSearch && matchesPriority;
+  });
+
+  const todoTasks = filteredTasks.filter(
+    (task) => task.status === "todo"
+  );
+
+  const inProgressTasks = filteredTasks.filter(
+    (task) => task.status === "in-progress"
+  );
+
+  const doneTasks = filteredTasks.filter(
+    (task) => task.status === "done"
+  );
+
   if (status === "loading") {
     return (
       <main className="mx-auto flex max-w-7xl justify-center px-6 py-12">
-        <p>Loading tasks...</p>
+        <p className="text-gray-300">
+          Loading tasks...
+        </p>
       </main>
     );
   }
 
-
-  // Error state
   if (status === "failed") {
     return (
       <main className="mx-auto max-w-7xl px-6 py-12">
-        <p className="text-red-600">
+        <p className="text-red-400">
           {error}
         </p>
       </main>
     );
   }
 
-
-  // Display board
   return (
     <main className="mx-auto max-w-7xl px-6 py-8">
-
       <div className="grid gap-6 md:grid-cols-3">
-
         <Column
           title="To Do"
           tasks={todoTasks}
@@ -77,9 +91,7 @@ function Board() {
           title="Done"
           tasks={doneTasks}
         />
-
       </div>
-
     </main>
   );
 }
