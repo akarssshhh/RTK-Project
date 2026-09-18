@@ -74,7 +74,7 @@
     },
     {
       "id": "10",
-      "title": "Handle rejected state",
+      "title": "Handle rejected states",
       "description": "Store the error message when the fetch fails.",
       "status": "todo",
       "priority": "medium",
