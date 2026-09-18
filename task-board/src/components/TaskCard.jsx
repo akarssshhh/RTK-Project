@@ -64,7 +64,7 @@ function TaskCard({ task }) {
 
   if (isEditing) {
     return (
-      <article className="flex h-[300px] flex-col rounded-lg bg-gray-700 p-5 shadow-md">
+      <article className="flex h-75 flex-col rounded-lg bg-gray-700 p-5 shadow-md">
         <input
           type="text"
           value={title}
@@ -105,7 +105,7 @@ function TaskCard({ task }) {
   }
 
   return (
-    <article className="flex h-[300px] flex-col rounded-lg bg-gray-700 p-5 shadow-md">
+    <article className="flex h-75 flex-col rounded-lg bg-gray-700 p-5 shadow-md">
       <h3 className="text-lg font-semibold text-white">
         {task.title}
       </h3>
